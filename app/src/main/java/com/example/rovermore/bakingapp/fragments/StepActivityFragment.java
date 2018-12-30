@@ -1,6 +1,5 @@
 package com.example.rovermore.bakingapp.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rovermore.bakingapp.R;
 import com.example.rovermore.bakingapp.activities.MainActivity;
@@ -48,6 +48,7 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
     private Step step;
     private int stepId;
     private int recipeId;
+    private int listsize;
 
     private TextView shortDescriptionTextView;
     private TextView descriptionTextView;
@@ -82,43 +83,45 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
                 (getResources(), R.drawable.accesorios_cocina));
         shortDescriptionTextView = rootView.findViewById(R.id.tv_short_description);
         descriptionTextView = rootView.findViewById((R.id.tv_description));
-        //nextStepTextView = rootView.findViewById(R.id.tv_next_step);
-        //previousStepTextView = rootView.findViewById(R.id.tv_previous_step);
+
+        nextStepTextView = rootView.findViewById(R.id.tv_next_step);
+        nextStepTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stepId==listsize -1){
+                    releasePlayer();
+                    playbackPosition = 0;
+                    stepId = 0;
+                    new FetchRecipeSteps().execute(recipeId);
+                }else{
+                    releasePlayer();
+                    playbackPosition = 0;
+                    stepId++;
+                    new FetchRecipeSteps().execute(recipeId);
+                }
+            }
+        });
+        previousStepTextView = rootView.findViewById(R.id.tv_previous_step);
+        previousStepTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stepId==0){
+                    Toast.makeText(getActivity().getApplication(),"You are at the first step",Toast.LENGTH_SHORT).show();
+                }else{
+                    releasePlayer();
+                    playbackPosition = 0;
+                    stepId--;
+                    new FetchRecipeSteps().execute(recipeId);
+                }
+            }
+        });
 
         new FetchRecipeSteps().execute(recipeId);
 
         return rootView;
     }
 
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
 
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
-
-    @Override
-    public void onPositionDiscontinuity() {
-
-    }
 
     private class FetchRecipeSteps extends AsyncTask<Integer, Void, List<Step>> {
 
@@ -148,9 +151,8 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
         }
     }
 
-
-
     private void createUI(List<Step> stepList){
+        listsize = stepList.size();
         step = stepList.get(stepId);
         String shortDescription = step.getShortDescription();
         String description = step.getDescription();
@@ -199,20 +201,9 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
     @Override
     public void onResume() {
         super.onResume();
-        hideSystemUi();
         if ((Util.SDK_INT <= 23 || player == null)) {
             initializePlayer(videoURL);
         }
-    }
-
-    @SuppressLint("InlinedApi")
-    private void hideSystemUi() {
-        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     @Override
@@ -239,6 +230,36 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
             player.release();
             player = null;
         }
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
+
     }
 
 }

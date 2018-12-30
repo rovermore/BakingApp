@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.onRec
         new FetchRecipes().execute(NetworkUtils.RECIPE_URL_STRING);
     }
 
-    @Override
-    public void onRecipeClicked(Recipe recipe) {
 
+    @Override
+    public void onRecipeClicked(int position) {
         Intent intent = new Intent(this, RecipeActivity.class);
-        intent.putExtra(RECIPE_ID,recipe.getId());
-        Log.v(LOG_TAG,"the value of recipeId: " + recipe.getId());
+        intent.putExtra(RECIPE_ID,position);
+        Log.v(LOG_TAG,"the value of recipeId: " + position);
         startActivity(intent);
     }
 

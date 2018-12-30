@@ -68,4 +68,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         this.ingredientList = ingredientList;
         notifyDataSetChanged();
     }
+
+    public void clearIngredientList(){
+        if(ingredientList!=null) {
+            ingredientList.clear();
+            ingredientList = null;
+            notifyDataSetChanged();
+        }
+    }
 }

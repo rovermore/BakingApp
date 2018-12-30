@@ -76,12 +76,11 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
         return rootView;
     }
 
-    @Override
-    public void onStepClicked(Step step) {
-        int stepId = step.getId();
 
+    @Override
+    public void onStepClicked(int position) {
         Intent intent = new Intent(getActivity().getApplication(), StepActivity.class);
-        intent.putExtra(StepActivity.STEP_ID,stepId);
+        intent.putExtra(StepActivity.STEP_ID,position);
         intent.putExtra(MainActivity.RECIPE_ID,recipeId);
         startActivity(intent);
     }

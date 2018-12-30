@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.rovermore.bakingapp.R;
+import com.example.rovermore.bakingapp.activities.MainActivity;
 import com.example.rovermore.bakingapp.adapters.IngredientAdapter;
 import com.example.rovermore.bakingapp.datamodel.Ingredient;
 import com.example.rovermore.bakingapp.utils.NetworkUtils;
@@ -41,7 +42,9 @@ public class IngredientActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_ingedient, container, false);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_ingredients);
+        if(getArguments()!=null)recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
+
+        recyclerView = rootView.findViewById(R.id.recycler_view_ingredients);
         layoutManager = new LinearLayoutManager(rootView.getContext());
         ingredientAdapter = new IngredientAdapter(rootView.getContext(),null);
         recyclerView.setLayoutManager(layoutManager);
@@ -80,11 +83,9 @@ public class IngredientActivityFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Ingredient> ingredients) {
             super.onPostExecute(ingredients);
+            if(ingredientAdapter!=null) ingredientAdapter.clearIngredientList();
             ingredientAdapter.setIngredientList(ingredients);
         }
     }
 
-    public void setRecipeId(int recipeId){
-        this.recipeId = recipeId;
-    }
 }

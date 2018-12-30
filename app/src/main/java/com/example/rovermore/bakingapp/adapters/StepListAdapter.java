@@ -20,7 +20,7 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepVi
     private onStepClickHandler mOnStepClickHandler;
 
     public interface onStepClickHandler{
-        void onStepClicked(Step step);
+        void onStepClicked(int position);
     }
 
     public StepListAdapter(Context context, List<Step> stepList, onStepClickHandler mOnStepClickHandler){
@@ -64,7 +64,7 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepVi
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            mOnStepClickHandler.onStepClicked(stepList.get(position));
+            mOnStepClickHandler.onStepClicked(position);
         }
     }
 
