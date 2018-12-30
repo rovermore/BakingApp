@@ -74,7 +74,10 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepVi
     }
 
     public void clearStepListAdapter(){
-        stepList = null;
-        notifyDataSetChanged();
+        if(stepList!=null) {
+            stepList.clear();
+            stepList = null;
+            notifyDataSetChanged();
+        }
     }
 }

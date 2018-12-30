@@ -26,8 +26,7 @@ public class RecipeActivity extends AppCompatActivity {
         bundle.putInt(MainActivity.RECIPE_ID,recipeId);
 
         RecipeActivityFragment recipeActivityFragment = new RecipeActivityFragment();
-        recipeActivityFragment.setRecipeId(recipeId);
-
+        recipeActivityFragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.recipe_fragment, recipeActivityFragment)

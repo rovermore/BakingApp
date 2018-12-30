@@ -10,7 +10,7 @@ import com.example.rovermore.bakingapp.fragments.StepActivityFragment;
 
 public class StepActivity extends AppCompatActivity {
 
-    public static final String RECIPE_ID = "recipe_id";
+    public static final String STEP_ID = "step_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +19,15 @@ public class StepActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        int stepId = intent.getIntExtra(RECIPE_ID,1);
+        int stepId = intent.getIntExtra(STEP_ID,1);
+        int recipeId = intent.getIntExtra(MainActivity.RECIPE_ID,1);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(STEP_ID,stepId);
+        bundle.putInt(MainActivity.RECIPE_ID,recipeId);
 
         StepActivityFragment stepActivityFragment = new StepActivityFragment();
-        stepActivityFragment.setStepId(stepId);
+        stepActivityFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

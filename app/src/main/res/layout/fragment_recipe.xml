@@ -23,7 +23,7 @@
         android:layout_marginRight="26dp"
         android:layout_marginLeft="26dp"
         android:layout_marginBottom="36dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         />
 
     <android.support.v7.widget.RecyclerView

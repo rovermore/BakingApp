@@ -48,6 +48,7 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
+        if(getArguments()!=null) recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
 
         Log.v("RecipeFragment","the value of recipeId: " + recipeId);
 
@@ -80,7 +81,8 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
         int stepId = step.getId();
 
         Intent intent = new Intent(getActivity().getApplication(), StepActivity.class);
-        intent.putExtra(StepActivity.RECIPE_ID,stepId);
+        intent.putExtra(StepActivity.STEP_ID,stepId);
+        intent.putExtra(MainActivity.RECIPE_ID,recipeId);
         startActivity(intent);
     }
 
@@ -111,7 +113,7 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
             super.onPostExecute(stepList);
             if(stepListAdapter!=null) stepListAdapter.clearStepListAdapter();
             stepListAdapter.setStepList(stepList);
-            stepRecyclerView.setAdapter(stepListAdapter);
+            //stepRecyclerView.setAdapter(stepListAdapter);
         }
     }
 
