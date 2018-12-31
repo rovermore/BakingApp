@@ -23,9 +23,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainAdapter.onRecipeClickListener {
 
+    //Setting variables
     private RecyclerView recyclerView;
     private MainAdapter recipeAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    //setting constants
     public static final String RECIPE_ID = "recipe_id";
     public static final String RECIPE_NAME = "recipe_name";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.onRec
         new FetchRecipes().execute(NetworkUtils.RECIPE_URL_STRING);
     }
 
-
+    //Starts the clicked recipe activity
     @Override
     public void onRecipeClicked(int position, String recipeName) {
         Intent intent = new Intent(this, RecipeActivity.class);
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.onRec
         startActivity(intent);
     }
 
+    //Fetches list of recipes from internet
     private class FetchRecipes extends AsyncTask<String,Void,List<Recipe>>{
 
         @Override

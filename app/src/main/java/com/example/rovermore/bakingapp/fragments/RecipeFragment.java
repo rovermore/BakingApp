@@ -41,8 +41,6 @@ public class RecipeFragment extends Fragment implements StepListAdapter.onStepCl
     private String recipeName;
     private boolean mTwoPane;
 
-    public static final String LOG_TAG = "RecipeFragment";
-
     public RecipeFragment() {}
 
 
@@ -136,11 +134,8 @@ public class RecipeFragment extends Fragment implements StepListAdapter.onStepCl
             super.onPostExecute(stepList);
             if(stepListAdapter!=null) stepListAdapter.clearStepListAdapter();
             stepListAdapter.setStepList(stepList);
-            //stepRecyclerView.setAdapter(stepListAdapter);
+
         }
     }
 
-    public void setRecipeId(int recipeId){
-        this.recipeId = recipeId;
-    }
 }

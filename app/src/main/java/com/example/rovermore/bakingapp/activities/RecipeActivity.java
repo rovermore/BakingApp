@@ -53,7 +53,6 @@ public final class RecipeActivity extends AppCompatActivity {
             RecipeFragment recipeFragment = new RecipeFragment();
             recipeFragment.setArguments(bundle);
 
-            //FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.recipe_fragment, recipeFragment)
                     .commit();
@@ -77,7 +76,7 @@ public final class RecipeActivity extends AppCompatActivity {
             //Inflates the fragment for the activity in phone
             RecipeFragment recipeFragment = new RecipeFragment();
             recipeFragment.setArguments(bundle);
-            //FragmentManager fragmentManager = getSupportFragmentManager();
+
             fragmentManager.beginTransaction()
                     .add(R.id.recipe_fragment, recipeFragment)
                     .commit();

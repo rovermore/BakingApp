@@ -25,14 +25,14 @@
     <TextView
         android:id="@+id/tv_short_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:gravity="center"
         android:textSize="32sp"
         android:layout_marginTop="22dp"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:textColor="@android:color/white"
-        android:background="@color/colorPrimary" />
+        android:background="@drawable/rounded_background_40dp" />
 
     <TextView
         android:id="@+id/tv_description"
@@ -52,31 +52,35 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:id="@+id/tv_previous_step"
             android:text="PREVIOUS"
             android:textSize="22sp"
             android:textColor="@android:color/white"
-            android:background="@color/colorAccent"
-            android:gravity="center"/>
+            android:background="@drawable/rounded_background_30dp"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_weight="1"
             />
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:id="@+id/tv_next_step"
             android:text="NEXT STEP"
             android:textSize="22sp"
             android:textColor="@android:color/white"
-            android:background="@color/colorAccent"
-            android:gravity="center"/>
+            android:background="@drawable/rounded_background_30dp"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
 
     </LinearLayout>
 

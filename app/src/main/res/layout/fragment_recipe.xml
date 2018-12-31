@@ -13,7 +13,7 @@
     <TextView
         android:id="@+id/tv_ingredients"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="80dp"
         android:text="Ingredients"
         android:gravity="center"
         android:textColor="@android:color/white"
@@ -22,7 +22,7 @@
         android:layout_marginRight="26dp"
         android:layout_marginLeft="26dp"
         android:layout_marginBottom="36dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/rounded_background"
         />
 
     <android.support.v7.widget.RecyclerView
