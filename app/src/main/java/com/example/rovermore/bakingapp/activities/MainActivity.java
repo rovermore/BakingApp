@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -74,9 +75,13 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.onRec
         }
     }
 
-    private void createUI (List<Recipe> recipes){
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_main_activity);
-        layoutManager = new LinearLayoutManager(this);
+    private void createUI(List<Recipe> recipes) {
+        recyclerView = findViewById(R.id.recycler_view_main_activity);
+        if (findViewById(R.id.tablet_frame_layout) != null) {
+            layoutManager = new GridLayoutManager(this, 2);
+        } else {
+            layoutManager = new LinearLayoutManager(this);
+        }
         recipeAdapter = new MainAdapter(this, recipes, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
