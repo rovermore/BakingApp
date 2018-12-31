@@ -31,18 +31,19 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecipeActivityFragment extends Fragment implements StepListAdapter.onStepClickHandler {
+public class RecipeFragment extends Fragment implements StepListAdapter.onStepClickHandler {
 
 
     private RecyclerView stepRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private StepListAdapter stepListAdapter;
     private int recipeId;
+    private String recipeName;
     private boolean mTwoPane;
 
-    public static final String LOG_TAG = "RecipeActivityFragment";
+    public static final String LOG_TAG = "RecipeFragment";
 
-    public RecipeActivityFragment() {}
+    public RecipeFragment() {}
 
 
     @Override
@@ -53,7 +54,10 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
         if(getArguments()!=null){
             recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
             mTwoPane = getArguments().getBoolean(RecipeActivity.TWO_PANE_KEY);
+            recipeName = getArguments().getString(MainActivity.RECIPE_NAME);
         }
+
+        getActivity().setTitle(recipeName);
 
         Log.v("RecipeFragment","the value of recipeId: " + recipeId);
 

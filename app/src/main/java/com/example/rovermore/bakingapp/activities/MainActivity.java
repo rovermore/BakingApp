@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.onRec
     private MainAdapter recipeAdapter;
     private RecyclerView.LayoutManager layoutManager;
     public static final String RECIPE_ID = "recipe_id";
+    public static final String RECIPE_NAME = "recipe_name";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -39,9 +40,10 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.onRec
 
 
     @Override
-    public void onRecipeClicked(int position) {
+    public void onRecipeClicked(int position, String recipeName) {
         Intent intent = new Intent(this, RecipeActivity.class);
         intent.putExtra(RECIPE_ID,position);
+        intent.putExtra(RECIPE_NAME,recipeName);
         Log.v(LOG_TAG,"the value of recipeId: " + position);
         startActivity(intent);
     }

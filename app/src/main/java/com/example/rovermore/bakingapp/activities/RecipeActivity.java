@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.rovermore.bakingapp.R;
-import com.example.rovermore.bakingapp.fragments.IngredientActivityFragment;
-import com.example.rovermore.bakingapp.fragments.RecipeActivityFragment;
-import com.example.rovermore.bakingapp.fragments.StepActivityFragment;
+import com.example.rovermore.bakingapp.fragments.IngredientFragment;
+import com.example.rovermore.bakingapp.fragments.RecipeFragment;
+import com.example.rovermore.bakingapp.fragments.StepFragment;
 
 public final class RecipeActivity extends AppCompatActivity {
 
@@ -18,6 +18,7 @@ public final class RecipeActivity extends AppCompatActivity {
 
     private int recipeId;
     private int stepId;
+    private String recipeName;
     private boolean mTwoPane;
 
 
@@ -30,12 +31,14 @@ public final class RecipeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         recipeId = intent.getIntExtra(MainActivity.RECIPE_ID,1);
         stepId = intent.getIntExtra(StepActivity.STEP_ID,-1);
+        recipeName = intent.getStringExtra(MainActivity.RECIPE_NAME);
 
+        setTitle(recipeName);
 
         //Setting up the bundle to pass as an argument to the fragments
         Bundle bundle = new Bundle();
         bundle.putInt(MainActivity.RECIPE_ID,recipeId);
-
+        bundle.putString(MainActivity.RECIPE_NAME,recipeName);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -47,12 +50,12 @@ public final class RecipeActivity extends AppCompatActivity {
             bundle.putBoolean(TWO_PANE_KEY, mTwoPane);
 
             //Inflates the left side panel
-            RecipeActivityFragment recipeActivityFragment = new RecipeActivityFragment();
-            recipeActivityFragment.setArguments(bundle);
+            RecipeFragment recipeFragment = new RecipeFragment();
+            recipeFragment.setArguments(bundle);
 
             //FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .add(R.id.recipe_fragment, recipeActivityFragment)
+                    .add(R.id.recipe_fragment, recipeFragment)
                     .commit();
 
             if(stepId==-1) {
@@ -72,11 +75,11 @@ public final class RecipeActivity extends AppCompatActivity {
             bundle.putBoolean(TWO_PANE_KEY, mTwoPane);
 
             //Inflates the fragment for the activity in phone
-            RecipeActivityFragment recipeActivityFragment = new RecipeActivityFragment();
-            recipeActivityFragment.setArguments(bundle);
+            RecipeFragment recipeFragment = new RecipeFragment();
+            recipeFragment.setArguments(bundle);
             //FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .add(R.id.recipe_fragment, recipeActivityFragment)
+                    .add(R.id.recipe_fragment, recipeFragment)
                     .commit();
 
             Log.v(LOG_TAG, "the value of recipeId: " + recipeId);
@@ -87,22 +90,22 @@ public final class RecipeActivity extends AppCompatActivity {
         int recipeId = bundle.getInt(MainActivity.RECIPE_ID);
 
         //Inflates the right side panel with the ingredient list fragment
-        IngredientActivityFragment ingredientActivityFragment = new IngredientActivityFragment();
-        ingredientActivityFragment.setArguments(bundle);
+        IngredientFragment ingredientFragment = new IngredientFragment();
+        ingredientFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .add(R.id.right_panel, ingredientActivityFragment)
+                .add(R.id.right_panel, ingredientFragment)
                 .commit();
         Log.v(LOG_TAG,"the value of recipeId: " + recipeId);
     }
 
     public void setStepInRightPanel(Bundle bundle, FragmentManager fragmentManager){
 
-        StepActivityFragment stepActivityFragment = new StepActivityFragment();
-        stepActivityFragment.setArguments(bundle);
+        StepFragment stepFragment = new StepFragment();
+        stepFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .add(R.id.right_panel, stepActivityFragment)
+                .add(R.id.right_panel, stepFragment)
                 .commit();
     }
 }

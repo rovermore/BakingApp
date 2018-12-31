@@ -43,12 +43,13 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StepActivityFragment extends Fragment implements ExoPlayer.EventListener {
+public class StepFragment extends Fragment implements ExoPlayer.EventListener {
 
     private Step step;
     private int stepId;
     private int recipeId;
     private int listSize;
+    private String recipeName;
 
     private TextView shortDescriptionTextView;
     private TextView descriptionTextView;
@@ -62,7 +63,7 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
     private boolean playWhenReady = true;
     private String videoURL;
 
-    public StepActivityFragment() {
+    public StepFragment() {
     }
 
     @Override
@@ -75,7 +76,10 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
 
             recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
             stepId = getArguments().getInt(StepActivity.STEP_ID);
+            recipeName = getArguments().getString(MainActivity.RECIPE_NAME);
         }
+
+        getActivity().setTitle(recipeName);
 
         mPlayerView = rootView.findViewById(R.id.playerView);
         // Load the question mark as the background image until the user answers the question.

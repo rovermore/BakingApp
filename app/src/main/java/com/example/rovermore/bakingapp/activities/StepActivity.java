@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.rovermore.bakingapp.R;
-import com.example.rovermore.bakingapp.fragments.StepActivityFragment;
+import com.example.rovermore.bakingapp.fragments.StepFragment;
 
 public class StepActivity extends AppCompatActivity {
 
@@ -26,12 +26,12 @@ public class StepActivity extends AppCompatActivity {
         bundle.putInt(STEP_ID,stepId);
         bundle.putInt(MainActivity.RECIPE_ID,recipeId);
 
-        StepActivityFragment stepActivityFragment = new StepActivityFragment();
-        stepActivityFragment.setArguments(bundle);
+        StepFragment stepFragment = new StepFragment();
+        stepFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.fragment_step, stepActivityFragment)
+                .add(R.id.fragment_step, stepFragment)
                 .commit();
 
     }

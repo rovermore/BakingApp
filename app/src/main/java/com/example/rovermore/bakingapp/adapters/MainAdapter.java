@@ -26,7 +26,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyRecipeViewHo
     }
 
     public interface onRecipeClickListener{
-        void onRecipeClicked(int position);
+        void onRecipeClicked(int position, String recipeName);
     }
 
     @NonNull
@@ -64,8 +64,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyRecipeViewHo
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-
-            mOnRecipeClickListener.onRecipeClicked(position);
+            Recipe recipe = recipeList.get(position);
+            String recipeName = recipe.getRecipeName();
+            mOnRecipeClickListener.onRecipeClicked(position, recipeName);
         }
     }
 }

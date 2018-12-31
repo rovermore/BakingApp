@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.rovermore.bakingapp.R;
-import com.example.rovermore.bakingapp.fragments.IngredientActivityFragment;
+import com.example.rovermore.bakingapp.fragments.IngredientFragment;
 
 public class IngredientActivity extends AppCompatActivity {
 
@@ -26,12 +26,12 @@ public class IngredientActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt(MainActivity.RECIPE_ID,recipeId);
 
-        IngredientActivityFragment ingredientActivityFragment = new IngredientActivityFragment();
-        ingredientActivityFragment.setArguments(bundle);
+        IngredientFragment ingredientFragment = new IngredientFragment();
+        ingredientFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.fragment_ingredients, ingredientActivityFragment)
+                .add(R.id.fragment_ingredients, ingredientFragment)
                 .commit();
         Log.v(LOG_TAG,"the value of recipeId: " + recipeId);
     }

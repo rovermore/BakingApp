@@ -27,14 +27,15 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class IngredientActivityFragment extends Fragment {
+public class IngredientFragment extends Fragment {
 
     private int recipeId;
+    private String recipeName;
     private IngredientAdapter ingredientAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
 
-    public IngredientActivityFragment() {
+    public IngredientFragment() {
     }
 
     @Override
@@ -42,7 +43,12 @@ public class IngredientActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_ingedient, container, false);
 
-        if(getArguments()!=null)recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
+        if(getArguments()!=null){
+            recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
+            recipeName = getArguments().getString(MainActivity.RECIPE_NAME);
+        }
+
+        getActivity().setTitle(recipeName);
 
         recyclerView = rootView.findViewById(R.id.recycler_view_ingredients);
         layoutManager = new LinearLayoutManager(rootView.getContext());
