@@ -48,7 +48,7 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
     private Step step;
     private int stepId;
     private int recipeId;
-    private int listsize;
+    private int listSize;
 
     private TextView shortDescriptionTextView;
     private TextView descriptionTextView;
@@ -88,7 +88,7 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
         nextStepTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(stepId==listsize -1){
+                if(stepId== listSize -1){
                     releasePlayer();
                     playbackPosition = 0;
                     stepId = 0;
@@ -152,7 +152,7 @@ public class StepActivityFragment extends Fragment implements ExoPlayer.EventLis
     }
 
     private void createUI(List<Step> stepList){
-        listsize = stepList.size();
+        listSize = stepList.size();
         step = stepList.get(stepId);
         String shortDescription = step.getShortDescription();
         String description = step.getDescription();

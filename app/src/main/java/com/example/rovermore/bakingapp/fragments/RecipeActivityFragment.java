@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.rovermore.bakingapp.R;
 import com.example.rovermore.bakingapp.activities.IngredientActivity;
 import com.example.rovermore.bakingapp.activities.MainActivity;
+import com.example.rovermore.bakingapp.activities.RecipeActivity;
 import com.example.rovermore.bakingapp.activities.StepActivity;
 import com.example.rovermore.bakingapp.adapters.StepListAdapter;
 import com.example.rovermore.bakingapp.datamodel.Step;
@@ -37,6 +38,7 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
     private RecyclerView.LayoutManager layoutManager;
     private StepListAdapter stepListAdapter;
     private int recipeId;
+    private boolean mTwoPane;
 
     public static final String LOG_TAG = "RecipeActivityFragment";
 
@@ -48,7 +50,10 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        if(getArguments()!=null) recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
+        if(getArguments()!=null){
+            recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
+            mTwoPane = getArguments().getBoolean(RecipeActivity.TWO_PANE_KEY);
+        }
 
         Log.v("RecipeFragment","the value of recipeId: " + recipeId);
 
@@ -56,11 +61,19 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
         ingredientsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //SET INTENT TO START INGREDIENTS ACTIVITY
-                Intent intent = new Intent(getActivity().getApplication(), IngredientActivity.class);
-                intent.putExtra(MainActivity.RECIPE_ID,recipeId);
-                Log.v("RecipeFragment","the value of recipeId: " + recipeId);
-                startActivity(intent);
+                if(!mTwoPane) {
+                    //SET INTENT TO START INGREDIENTS ACTIVITY
+                    Intent intent = new Intent(getActivity().getApplication(), IngredientActivity.class);
+                    intent.putExtra(MainActivity.RECIPE_ID, recipeId);
+                    Log.v("RecipeFragment", "the value of recipeId: " + recipeId);
+                    startActivity(intent);
+                }else{
+
+                    Intent intent = new Intent(getActivity().getApplication(), RecipeActivity.class);
+                    intent.putExtra(MainActivity.RECIPE_ID, recipeId);
+                    Log.v("RecipeFragment", "the value of recipeId: " + recipeId);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -79,10 +92,17 @@ public class RecipeActivityFragment extends Fragment implements StepListAdapter.
 
     @Override
     public void onStepClicked(int position) {
-        Intent intent = new Intent(getActivity().getApplication(), StepActivity.class);
-        intent.putExtra(StepActivity.STEP_ID,position);
-        intent.putExtra(MainActivity.RECIPE_ID,recipeId);
-        startActivity(intent);
+        if(!mTwoPane) {
+            Intent intent = new Intent(getActivity().getApplication(), StepActivity.class);
+            intent.putExtra(StepActivity.STEP_ID, position);
+            intent.putExtra(MainActivity.RECIPE_ID, recipeId);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(getActivity().getApplication(), RecipeActivity.class);
+            intent.putExtra(StepActivity.STEP_ID, position);
+            intent.putExtra(MainActivity.RECIPE_ID, recipeId);
+            startActivity(intent);
+        }
     }
 
     private class FetchRecipeSteps extends AsyncTask<Integer, Void, List<Step>>{
