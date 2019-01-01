@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+
+
     <FrameLayout
         android:id="@+id/recipe_fragment"
         android:layout_width="0dp"

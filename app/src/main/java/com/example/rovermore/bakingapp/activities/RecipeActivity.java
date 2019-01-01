@@ -11,7 +11,7 @@ import com.example.rovermore.bakingapp.fragments.IngredientFragment;
 import com.example.rovermore.bakingapp.fragments.RecipeFragment;
 import com.example.rovermore.bakingapp.fragments.StepFragment;
 
-public final class RecipeActivity extends AppCompatActivity {
+public final class RecipeActivity extends AppCompatActivity implements StepFragment.OnDataPass {
 
     public static final String LOG_TAG = RecipeActivity.class.getSimpleName();
     public static final String  TWO_PANE_KEY = "two_panel_key";
@@ -107,5 +107,10 @@ public final class RecipeActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.right_panel, stepFragment)
                 .commit();
+    }
+
+    @Override
+    public void onDataPass(long currentPlayPosition, int id) {
+
     }
 }

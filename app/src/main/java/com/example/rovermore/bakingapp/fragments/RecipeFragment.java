@@ -55,11 +55,10 @@ public class RecipeFragment extends Fragment implements StepListAdapter.onStepCl
             recipeName = getArguments().getString(MainActivity.RECIPE_NAME);
         }
 
-        getActivity().setTitle(recipeName);
-
         Log.v("RecipeFragment","the value of recipeId: " + recipeId);
 
         TextView ingredientsTextView = rootView.findViewById(R.id.tv_ingredients);
+
         ingredientsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -63,7 +63,7 @@ public class StepFragment extends Fragment {
     public static final String PLAYBACK_POSITION_KEY = "playback_position";
 
     public interface OnDataPass {
-        void onDataPass(long currentPlayPosition);
+        void onDataPass(long currentPlayPosition, int id);
     }
 
     public StepFragment() {
@@ -103,12 +103,12 @@ public class StepFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(stepId== listSize -1){
-                    releasePlayer();
+                    releasePlayer(true);
                     playbackPosition = 0;
                     stepId = 0;
                     new FetchRecipeSteps().execute(recipeId);
                 }else{
-                    releasePlayer();
+                    releasePlayer(true);
                     playbackPosition = 0;
                     stepId++;
                     new FetchRecipeSteps().execute(recipeId);
@@ -122,7 +122,7 @@ public class StepFragment extends Fragment {
                 if(stepId==0){
                     Toast.makeText(getActivity().getApplication(),"You are at the first step",Toast.LENGTH_SHORT).show();
                 }else{
-                    releasePlayer();
+                    releasePlayer(true);
                     playbackPosition = 0;
                     stepId--;
                     new FetchRecipeSteps().execute(recipeId);
@@ -220,7 +220,7 @@ public class StepFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (Util.SDK_INT <= 23) {
-            releasePlayer();
+            releasePlayer(false);
         }
     }
 
@@ -228,18 +228,18 @@ public class StepFragment extends Fragment {
     public void onStop() {
         super.onStop();
         if (Util.SDK_INT > 23) {
-            releasePlayer();
+            releasePlayer(false);
         }
     }
 
-    private void releasePlayer() {
+    private void releasePlayer(boolean isSkipButtonClicked) {
         if (player != null) {
             playbackPosition = player.getCurrentPosition();
             currentWindow = player.getCurrentWindowIndex();
             playWhenReady = player.getPlayWhenReady();
             player.release();
             player = null;
-            mOnDataPass.onDataPass(playbackPosition);
+            if(!isSkipButtonClicked) mOnDataPass.onDataPass(playbackPosition,stepId);
         }
     }
 

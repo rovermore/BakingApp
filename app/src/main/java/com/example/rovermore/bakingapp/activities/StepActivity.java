@@ -16,6 +16,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
     public static final String FRAGMENT_ID = "101";
 
     private long playbackPosition;
+    private int stepId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +25,11 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
 
         if(savedInstanceState!=null){
             playbackPosition = savedInstanceState.getLong(StepFragment.PLAYBACK_POSITION_KEY);
+            stepId = savedInstanceState.getInt(STEP_ID);
         }
 
         Intent intent = getIntent();
-        int stepId = intent.getIntExtra(STEP_ID,1);
+        if(savedInstanceState==null) stepId = intent.getIntExtra(STEP_ID,1);
         int recipeId = intent.getIntExtra(MainActivity.RECIPE_ID,1);
 
         Bundle bundle = new Bundle();
@@ -38,7 +40,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         //Saving the fragment if was instanced anytime
-        Fragment fragment =  fragmentManager.findFragmentByTag(FRAGMENT_ID);
+        Fragment fragment =  fragmentManager.findFragmentByTag(String.valueOf(stepId));
         //checks if the fragment was instanced
         if(fragment!=null) {
             //as the fragment was already instanced we cast it in the specific fragment type (StepFragment)
@@ -47,26 +49,28 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
             stepFragment.setArguments(bundle);
             //replacing it
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_step, stepFragment, FRAGMENT_ID)
+                    .replace(R.id.fragment_step, stepFragment, String.valueOf(stepId))
                     .commit();
         } else {
             //the fragment was never instanced so we instance it as new
             StepFragment stepFragment = new StepFragment();
             stepFragment.setArguments(bundle);
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_step, stepFragment, FRAGMENT_ID)
+                    .replace(R.id.fragment_step, stepFragment, String.valueOf(stepId))
                     .commit();
         }
     }
 
     @Override
-    public void onDataPass(long currentPlayPosition) {
+    public void onDataPass(long currentPlayPosition, int id) {
         playbackPosition = currentPlayPosition;
+        stepId = id;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(StepFragment.PLAYBACK_POSITION_KEY,playbackPosition);
+        outState.putInt(STEP_ID,stepId);
     }
 }
