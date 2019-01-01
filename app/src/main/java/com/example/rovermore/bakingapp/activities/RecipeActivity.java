@@ -54,7 +54,7 @@ public final class RecipeActivity extends AppCompatActivity {
             recipeFragment.setArguments(bundle);
 
             fragmentManager.beginTransaction()
-                    .add(R.id.recipe_fragment, recipeFragment)
+                    .replace(R.id.recipe_fragment, recipeFragment)
                     .commit();
 
             if(stepId==-1) {
@@ -77,8 +77,9 @@ public final class RecipeActivity extends AppCompatActivity {
             RecipeFragment recipeFragment = new RecipeFragment();
             recipeFragment.setArguments(bundle);
 
+
             fragmentManager.beginTransaction()
-                    .add(R.id.recipe_fragment, recipeFragment)
+                    .replace(R.id.recipe_fragment, recipeFragment)
                     .commit();
 
             Log.v(LOG_TAG, "the value of recipeId: " + recipeId);
@@ -93,7 +94,7 @@ public final class RecipeActivity extends AppCompatActivity {
         ingredientFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .add(R.id.right_panel, ingredientFragment)
+                .replace(R.id.right_panel, ingredientFragment)
                 .commit();
         Log.v(LOG_TAG,"the value of recipeId: " + recipeId);
     }
@@ -104,7 +105,7 @@ public final class RecipeActivity extends AppCompatActivity {
         stepFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .add(R.id.right_panel, stepFragment)
+                .replace(R.id.right_panel, stepFragment)
                 .commit();
     }
 }

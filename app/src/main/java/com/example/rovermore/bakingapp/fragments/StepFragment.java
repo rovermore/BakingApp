@@ -18,17 +18,12 @@ import com.example.rovermore.bakingapp.activities.StepActivity;
 import com.example.rovermore.bakingapp.datamodel.Step;
 import com.example.rovermore.bakingapp.utils.NetworkUtils;
 import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -43,13 +38,14 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StepFragment extends Fragment implements ExoPlayer.EventListener {
+public class StepFragment extends Fragment {
 
     private Step step;
     private int stepId;
     private int recipeId;
     private int listSize;
     private String recipeName;
+    private Context context;
 
     private TextView shortDescriptionTextView;
     private TextView descriptionTextView;
@@ -62,8 +58,22 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
     private int currentWindow;
     private boolean playWhenReady = true;
     private String videoURL;
+    private OnDataPass mOnDataPass;
+
+    public static final String PLAYBACK_POSITION_KEY = "playback_position";
+
+    public interface OnDataPass {
+        void onDataPass(long currentPlayPosition);
+    }
 
     public StepFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mOnDataPass = (OnDataPass) context;
+        this.context = context;
     }
 
     @Override
@@ -73,10 +83,10 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
         View rootView = inflater.inflate(R.layout.fragment_step, container, false);
 
         if(getArguments()!=null){
-
             recipeId = getArguments().getInt(MainActivity.RECIPE_ID);
             stepId = getArguments().getInt(StepActivity.STEP_ID);
             recipeName = getArguments().getString(MainActivity.RECIPE_NAME);
+            playbackPosition = getArguments().getLong(PLAYBACK_POSITION_KEY);
         }
 
         getActivity().setTitle(recipeName);
@@ -168,7 +178,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
 
     private void initializePlayer(String videoURL) {
         if(player==null && videoURL!=null) {
-            Context context = getActivity().getApplicationContext();
+
             player = ExoPlayerFactory.newSimpleInstance(context,
                     new DefaultTrackSelector(), new DefaultLoadControl());
 
@@ -176,8 +186,6 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
 
             player.setPlayWhenReady(playWhenReady);
             player.seekTo(currentWindow, playbackPosition);
-
-            player.addListener(this);
 
             Uri uri = Uri.parse(videoURL);
             MediaSource mediaSource = buildMediaSource(uri);
@@ -192,13 +200,11 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
         return mediaSource;
     }
 
-
-
     @Override
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
-            initializePlayer(videoURL);
+        initializePlayer(videoURL);
         }
     }
 
@@ -233,37 +239,9 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
             playWhenReady = player.getPlayWhenReady();
             player.release();
             player = null;
+            mOnDataPass.onDataPass(playbackPosition);
         }
     }
 
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
-
-    @Override
-    public void onPositionDiscontinuity() {
-
-    }
 
 }
