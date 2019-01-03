@@ -13,10 +13,11 @@ import com.example.rovermore.bakingapp.fragments.StepFragment;
 public class StepActivity extends AppCompatActivity implements StepFragment.OnDataPass{
 
     public static final String STEP_ID = "step_id";
-    public static final String FRAGMENT_ID = "101";
+    public static final String PLAY_WHRN_READY = "play_when_ready";
 
     private long playbackPosition;
     private int stepId;
+    private boolean playWhenReady;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
         if(savedInstanceState!=null){
             playbackPosition = savedInstanceState.getLong(StepFragment.PLAYBACK_POSITION_KEY);
             stepId = savedInstanceState.getInt(STEP_ID);
+            playWhenReady = savedInstanceState.getBoolean(PLAY_WHRN_READY);
         }
 
         Intent intent = getIntent();
@@ -36,6 +38,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
         bundle.putInt(STEP_ID,stepId);
         bundle.putInt(MainActivity.RECIPE_ID,recipeId);
         bundle.putLong(StepFragment.PLAYBACK_POSITION_KEY,playbackPosition);
+        bundle.putBoolean(PLAY_WHRN_READY, playWhenReady);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -62,9 +65,10 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
     }
 
     @Override
-    public void onDataPass(long currentPlayPosition, int id) {
+    public void onDataPass(long currentPlayPosition, int id, boolean playWhenReady) {
         playbackPosition = currentPlayPosition;
         stepId = id;
+        this.playWhenReady = playWhenReady;
     }
 
     @Override
@@ -72,5 +76,6 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
         super.onSaveInstanceState(outState);
         outState.putLong(StepFragment.PLAYBACK_POSITION_KEY,playbackPosition);
         outState.putInt(STEP_ID,stepId);
+        outState.putBoolean(PLAY_WHRN_READY, playWhenReady);
     }
 }

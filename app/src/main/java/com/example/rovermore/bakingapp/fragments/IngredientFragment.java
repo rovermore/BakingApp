@@ -48,8 +48,6 @@ public class IngredientFragment extends Fragment {
             recipeName = getArguments().getString(MainActivity.RECIPE_NAME);
         }
 
-        getActivity().setTitle(recipeName);
-
         recyclerView = rootView.findViewById(R.id.recycler_view_ingredients);
         layoutManager = new LinearLayoutManager(rootView.getContext());
         ingredientAdapter = new IngredientAdapter(rootView.getContext(),null);

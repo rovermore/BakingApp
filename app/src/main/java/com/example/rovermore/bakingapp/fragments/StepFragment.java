@@ -56,14 +56,14 @@ public class StepFragment extends Fragment {
     private SimpleExoPlayerView mPlayerView;
     private long playbackPosition;
     private int currentWindow;
-    private boolean playWhenReady = true;
+    private boolean playWhenReady = false;
     private String videoURL;
     private OnDataPass mOnDataPass;
 
     public static final String PLAYBACK_POSITION_KEY = "playback_position";
 
     public interface OnDataPass {
-        void onDataPass(long currentPlayPosition, int id);
+        void onDataPass(long currentPlayPosition, int id, boolean playWhenReady);
     }
 
     public StepFragment() {
@@ -87,9 +87,8 @@ public class StepFragment extends Fragment {
             stepId = getArguments().getInt(StepActivity.STEP_ID);
             recipeName = getArguments().getString(MainActivity.RECIPE_NAME);
             playbackPosition = getArguments().getLong(PLAYBACK_POSITION_KEY);
+            playWhenReady = getArguments().getBoolean(StepActivity.PLAY_WHRN_READY);
         }
-
-        getActivity().setTitle(recipeName);
 
         mPlayerView = rootView.findViewById(R.id.playerView);
         // Load the question mark as the background image until the user answers the question.
@@ -103,14 +102,16 @@ public class StepFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(stepId== listSize -1){
-                    releasePlayer(true);
                     playbackPosition = 0;
                     stepId = 0;
+                    releasePlayer(true);
+                    mOnDataPass.onDataPass(playbackPosition,stepId, playWhenReady);
                     new FetchRecipeSteps().execute(recipeId);
                 }else{
-                    releasePlayer(true);
                     playbackPosition = 0;
                     stepId++;
+                    releasePlayer(true);
+                    mOnDataPass.onDataPass(playbackPosition,stepId, playWhenReady);
                     new FetchRecipeSteps().execute(recipeId);
                 }
             }
@@ -122,9 +123,10 @@ public class StepFragment extends Fragment {
                 if(stepId==0){
                     Toast.makeText(getActivity().getApplication(),"You are at the first step",Toast.LENGTH_SHORT).show();
                 }else{
-                    releasePlayer(true);
                     playbackPosition = 0;
                     stepId--;
+                    releasePlayer(true);
+                    mOnDataPass.onDataPass(playbackPosition,stepId, playWhenReady);
                     new FetchRecipeSteps().execute(recipeId);
                 }
             }
@@ -232,14 +234,20 @@ public class StepFragment extends Fragment {
         }
     }
 
-    private void releasePlayer(boolean isSkipButtonClicked) {
+    public void releasePlayer(boolean isSkip) {
         if (player != null) {
-            playbackPosition = player.getCurrentPosition();
-            currentWindow = player.getCurrentWindowIndex();
-            playWhenReady = player.getPlayWhenReady();
+            if(isSkip){
+                playbackPosition = 0;
+                currentWindow = 0;
+                playWhenReady = false;
+            } else {
+                playbackPosition = player.getCurrentPosition();
+                currentWindow = player.getCurrentWindowIndex();
+                playWhenReady = player.getPlayWhenReady();
+            }
             player.release();
             player = null;
-            if(!isSkipButtonClicked) mOnDataPass.onDataPass(playbackPosition,stepId);
+            mOnDataPass.onDataPass(playbackPosition,stepId, playWhenReady);
         }
     }
 

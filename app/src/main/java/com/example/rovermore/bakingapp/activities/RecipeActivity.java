@@ -2,6 +2,8 @@ package com.example.rovermore.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,26 +23,38 @@ public final class RecipeActivity extends AppCompatActivity implements StepFragm
     private String recipeName;
     private boolean mTwoPane;
 
+    private long playbackPosition;
+    private boolean playWhenReady;
+
+    private StepFragment stepFragment;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
+        if(savedInstanceState!=null){
+            stepId = savedInstanceState.getInt(StepActivity.STEP_ID);
+            playbackPosition = savedInstanceState.getLong(StepFragment.PLAYBACK_POSITION_KEY);
+            playWhenReady = savedInstanceState.getBoolean(StepActivity.PLAY_WHRN_READY);
+        }
+
         //Receiving intent and saving the value of the recipe clicked
         Intent intent = getIntent();
         recipeId = intent.getIntExtra(MainActivity.RECIPE_ID,1);
-        stepId = intent.getIntExtra(StepActivity.STEP_ID,-1);
+        if(savedInstanceState==null)stepId = intent.getIntExtra(StepActivity.STEP_ID,-1);
         recipeName = intent.getStringExtra(MainActivity.RECIPE_NAME);
-
-        setTitle(recipeName);
 
         //Setting up the bundle to pass as an argument to the fragments
         Bundle bundle = new Bundle();
         bundle.putInt(MainActivity.RECIPE_ID,recipeId);
         bundle.putString(MainActivity.RECIPE_NAME,recipeName);
+        bundle.putLong(StepFragment.PLAYBACK_POSITION_KEY,playbackPosition);
+        bundle.putBoolean(StepActivity.PLAY_WHRN_READY,playWhenReady);
+        bundle.putInt(StepActivity.STEP_ID,stepId);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         //Checking if we are in a tablet or in a phone
         if(findViewById(R.id.two_pane_linear_layout)!=null){
@@ -101,16 +115,53 @@ public final class RecipeActivity extends AppCompatActivity implements StepFragm
 
     public void setStepInRightPanel(Bundle bundle, FragmentManager fragmentManager){
 
-        StepFragment stepFragment = new StepFragment();
-        stepFragment.setArguments(bundle);
+        stepFragment = new StepFragment();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.right_panel, stepFragment)
-                .commit();
+        //Saving the fragment if was instanced anytime
+        Fragment fragment =  fragmentManager.findFragmentByTag(String.valueOf(stepId));
+
+        if(fragment!=null) {
+            //as the fragment was already instanced we cast it in the specific fragment type (StepFragment)
+            StepFragment stepFragment = (StepFragment) fragment;
+            stepFragment.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.right_panel, stepFragment, String.valueOf(stepId))
+                    .commit();
+        } else {
+            stepFragment.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.right_panel, stepFragment, String.valueOf(stepId))
+                    .commit();
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //Saving the fragment if was instanced anytime
+        Fragment fragment =  fragmentManager.findFragmentByTag(String.valueOf(stepId));
+
+        if(fragment!=null) {
+            //as the fragment was already instanced we cast it in the specific fragment type (StepFragment)
+            StepFragment stepFragment = (StepFragment) fragment;
+            stepFragment.releasePlayer(false);
+        }
     }
 
     @Override
-    public void onDataPass(long currentPlayPosition, int id) {
+    public void onDataPass(long currentPlayPosition, int id, boolean playWhenReady) {
+        playbackPosition = currentPlayPosition;
+        stepId = id;
+        this.playWhenReady = playWhenReady;
+    }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(StepFragment.PLAYBACK_POSITION_KEY,playbackPosition);
+        outState.putInt(StepActivity.STEP_ID,stepId);
+        outState.putBoolean(StepActivity.PLAY_WHRN_READY, playWhenReady);
     }
 }
