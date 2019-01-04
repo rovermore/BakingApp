@@ -38,9 +38,6 @@ dependencies {
     //dependency for test intents
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
 
-    //dependency espresso for test idling resources
-    androidTestImplementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
-
     //dependency for espresso test RecyclerViews
     androidTestImplementation ('com.android.support.test.espresso:espresso-contrib:2.2.1'){
         // Necessary to avoid version conflicts
