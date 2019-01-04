@@ -35,6 +35,7 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     }
 
+    //You can execute asynchronous task inside this method without asynctask needed
     @Override
     public void onDataSetChanged() {
 
@@ -72,6 +73,9 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
         Intent intent=new Intent();
         Bundle extras=new Bundle();
 
+        //Here you set the ID of the item clicked in the list that will be added later
+        //in the pending intent without needing any extra
+        //so will open directly the selected recipe ingredients list
         extras.putInt(MainActivity.RECIPE_ID, position);
         intent.putExtras(extras);
         rv.setOnClickFillInIntent(R.id.widget_row_tv_ingredient, intent);
