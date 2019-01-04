@@ -18,6 +18,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
     private long playbackPosition;
     private int stepId;
     private boolean playWhenReady;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
         bundle.putLong(StepFragment.PLAYBACK_POSITION_KEY,playbackPosition);
         bundle.putBoolean(PLAY_WHRN_READY, playWhenReady);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         //Saving the fragment if was instanced anytime
         Fragment fragment =  fragmentManager.findFragmentByTag(String.valueOf(stepId));
@@ -69,6 +70,20 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnDa
         playbackPosition = currentPlayPosition;
         stepId = id;
         this.playWhenReady = playWhenReady;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //Saving the fragment if was instanced anytime
+        Fragment fragment =  fragmentManager.findFragmentByTag(String.valueOf(stepId));
+
+        if(fragment!=null) {
+            //as the fragment was already instanced we cast it in the specific fragment type (StepFragment)
+            StepFragment stepFragment = (StepFragment) fragment;
+            stepFragment.releasePlayer(false);
+        }
     }
 
     @Override
