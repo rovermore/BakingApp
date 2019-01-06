@@ -38,7 +38,7 @@ public class WidgetProvider extends AppWidgetProvider {
                             clickIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
             //this pending intent launches the activity with the id of the row selected
-            //widget.setPendingIntentTemplate(R.id.listViewWidget, clickPI);
+            widget.setPendingIntentTemplate(R.id.listViewWidget, clickPI);
 
             //notify the data has changed in the widget
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds[i], R.id.listViewWidget);

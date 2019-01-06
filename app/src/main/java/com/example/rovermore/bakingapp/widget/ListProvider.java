@@ -9,7 +9,7 @@ import android.widget.RemoteViewsService;
 
 import com.example.rovermore.bakingapp.R;
 import com.example.rovermore.bakingapp.activities.MainActivity;
-import com.example.rovermore.bakingapp.datamodel.Ingredient;
+import com.example.rovermore.bakingapp.datamodel.Recipe;
 import com.example.rovermore.bakingapp.utils.NetworkUtils;
 
 import org.json.JSONException;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
-    private List<Ingredient> ingredientList;
+    private List<Recipe> recipeList;
     private int appWidgetId;
 
     public ListProvider(Context applicationContext, Intent intent) {
@@ -43,7 +43,7 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
         try {
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
-            ingredientList = NetworkUtils.parseIngredientsJson(jsonResponse,1);
+            recipeList = NetworkUtils.parseJson(jsonResponse);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -59,16 +59,16 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return ingredientList == null ? 0 : ingredientList.size();
+        return recipeList == null ? 0 : recipeList.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
 
-        Ingredient ingredient = ingredientList.get(position);
+        Recipe recipe = recipeList.get(position);
 
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.list_row);
-        rv.setTextViewText(R.id.widget_row_tv_ingredient, ingredient.getIngredient() );
+        rv.setTextViewText(R.id.widget_row_tv_ingredient, recipe.getRecipeName() );
 
         Intent intent=new Intent();
         Bundle extras=new Bundle();
